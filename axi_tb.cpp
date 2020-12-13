@@ -18,13 +18,13 @@ void AxiTB::readHandler() {
   m_RVALID.write(true);
   wait(clk.posedge_event());
   for (int i = 0; i < len; ++i) {
+    if (i == len - 1) {
+      m_RLAST.write(true);
+    }
     while (!m_RREADY.read()) {
       wait(clk.posedge_event());
     }
     wait(clk.posedge_event());
-    if (i == len - 1) {
-      m_RLAST.write(true);
-    }
   }
   m_RLAST.write(false);
 }
