@@ -1,101 +1,14 @@
 #include <systemc.h>
 
+#include "axi_tb.h"
+
 #include "obj_dir/Vaxi_dut.h"
-
-SC_MODULE(TB) {
- public:
-  SC_CTOR(TB) {
-    SC_THREAD(handler);
-  };
-
-  void handler() {
-  };
-
-  sc_in<bool> clk;
-  sc_out<bool> s_ARVALID;
-  sc_in<bool> s_ARREADY;
-  sc_out<uint32_t> s_ARLEN;
-  sc_out<uint32_t> s_ARSIZE;
-  sc_out<bool> s_ARID;
-  sc_out<uint32_t> s_ARBURST;
-  sc_out<bool> s_ARLOCK;
-  sc_out<uint32_t> s_ARCACHE;
-  sc_out<uint32_t> s_ARPROT;
-  sc_out<uint32_t> s_ARQOS;
-  sc_out<bool> s_ARUSER;
-  sc_in<bool> s_RVALID;
-  sc_out<bool> s_RREADY;
-  sc_in<bool> s_RLAST;
-  sc_in<uint32_t> s_RRESP;
-  sc_in<bool> s_RUSER;
-  sc_out<bool> s_AWVALID;
-  sc_in<bool> s_AWREADY;
-  sc_out<uint32_t> s_AWLEN;
-  sc_out<uint32_t> s_AWSIZE;
-  sc_out<bool> s_AWID;
-  sc_out<uint32_t> s_AWBURST;
-  sc_out<bool> s_AWLOCK;
-  sc_out<uint32_t> s_AWCACHE;
-  sc_out<uint32_t> s_AWPROT;
-  sc_out<uint32_t> s_AWQOS;
-  sc_out<bool> s_AWUSER;
-  sc_out<bool> s_WVALID;
-  sc_in<bool> s_WREADY;
-  sc_out<bool> s_WLAST;
-  sc_out<uint32_t> s_WSTRB;
-  sc_out<bool> s_WUSER;
-  sc_in<bool> s_BVALID;
-  sc_out<bool> s_BREADY;
-  sc_in<uint32_t> s_BRESP;
-  sc_in<bool> m_ARVALID;
-  sc_out<bool> m_ARREADY;
-  sc_in<uint32_t> m_ARLEN;
-  sc_in<uint32_t> m_ARSIZE;
-  sc_in<bool> m_ARID;
-  sc_in<uint32_t> m_ARBURST;
-  sc_in<bool> m_ARLOCK;
-  sc_in<uint32_t> m_ARCACHE;
-  sc_in<uint32_t> m_ARPROT;
-  sc_in<uint32_t> m_ARQOS;
-  sc_in<bool> m_ARUSER;
-  sc_out<bool> m_RVALID;
-  sc_in<bool> m_RREADY;
-  sc_out<bool> m_RLAST;
-  sc_out<uint32_t> m_RRESP;
-  sc_out<bool> m_RUSER;
-  sc_in<bool> m_AWVALID;
-  sc_out<bool> m_AWREADY;
-  sc_in<uint32_t> m_AWLEN;
-  sc_in<uint32_t> m_AWSIZE;
-  sc_in<bool> m_AWID;
-  sc_in<uint32_t> m_AWBURST;
-  sc_in<bool> m_AWLOCK;
-  sc_in<uint32_t> m_AWCACHE;
-  sc_in<uint32_t> m_AWPROT;
-  sc_in<uint32_t> m_AWQOS;
-  sc_in<bool> m_AWUSER;
-  sc_in<bool> m_WVALID;
-  sc_out<bool> m_WREADY;
-  sc_in<bool> m_WLAST;
-  sc_in<uint32_t> m_WSTRB;
-  sc_in<bool> m_WUSER;
-  sc_out<bool> m_BVALID;
-  sc_in<bool> m_BREADY;
-  sc_out<uint32_t> m_BRESP;
-  sc_out<uint32_t> s_ARADDR;
-  sc_in<uint32_t> s_RDATA;
-  sc_out<uint32_t> s_AWADDR;
-  sc_out<uint32_t> s_WDATA;
-  sc_in<uint32_t> m_ARADDR;
-  sc_out<uint32_t> m_RDATA;
-  sc_in<uint32_t> m_AWADDR;
-  sc_in<uint32_t> m_WDATA;
-};
 
 int sc_main(int argc, char **argv) {
   sc_clock clk("CLK", 10, SC_NS);
   sc_signal<bool> rst;
 
+  // s_ is Slave side for DUT. m_ is Master.
   sc_signal<bool> s_ARVALID;
   sc_signal<bool> s_ARREADY;
   sc_signal<uint32_t> s_ARLEN;
@@ -258,7 +171,7 @@ int sc_main(int argc, char **argv) {
   dut.s_WUSER(s_WUSER);
   dut.s_WVALID(s_WVALID);
 
-  TB tb("tb");
+  AxiTB tb("tb");
   tb.clk(clk);
 
   tb.m_ARADDR(m_ARADDR);
