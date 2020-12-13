@@ -1,9 +1,28 @@
 #include "axi_tb.h"
 
-void AxiTB::writeHandler() {
-  while (true) {
+void AxiTB::writeAddressHandler() {
+  while (!m_AWVALID.read()) {
     wait(clk.posedge_event());
   }
+  m_AWREADY.write(true);
+  wait(clk.posedge_event());
+  m_AWREADY.write(false);
+}
+
+void AxiTB::writeDataHandler() {
+  while (!m_WVALID.read()) {
+    wait(clk.posedge_event());
+  }
+  m_WREADY.write(true);
+  while (m_WVALID.read()) {
+    wait(clk.posedge_event());
+  }
+  m_BVALID.write(true);
+  wait(clk.posedge_event());
+  while (!m_BREADY.read()) {
+    wait(clk.posedge_event());
+  }
+  m_BVALID.write(false);
 }
 
 void AxiTB::readHandler() {

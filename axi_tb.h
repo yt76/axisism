@@ -7,12 +7,15 @@
 SC_MODULE(AxiTB) {
  public:
   SC_CTOR(AxiTB) {
-    SC_THREAD(writeHandler);
+    SC_THREAD(writeAddressHandler);
+    SC_THREAD(writeDataHandler);
     SC_THREAD(readHandler);
   };
 
-  // m_AW, m_W, m_B
-  void writeHandler();
+  // m_AW
+  void writeAddressHandler();
+  // m_W, m_B
+  void writeDataHandler();
 
   // m_AR, m_R
   void readHandler();
