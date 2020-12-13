@@ -4,6 +4,24 @@
 
 #include "obj_dir/Vaxi_dut.h"
 
+SC_MODULE(Reset) {
+ public:
+  SC_CTOR(Reset) {
+    SC_THREAD(run);
+  };
+
+  void run() {
+    rst.write(true);
+    wait(clk.negedge_event());
+    wait(clk.negedge_event());
+    wait(clk.negedge_event());
+    rst.write(false);
+  }
+
+  sc_out<bool> rst;
+  sc_in<bool> clk;
+};
+
 int sc_main(int argc, char **argv) {
   sc_clock clk("CLK", 10, SC_NS);
   sc_signal<bool> rst;
@@ -91,6 +109,10 @@ int sc_main(int argc, char **argv) {
   Vaxi_dut dut("dut");
   dut.clk(clk);
   dut.rst(rst);
+
+  Reset reset("reset");
+  reset.clk(clk);
+  reset.rst(rst);
 
   dut.m_ARADDR(m_ARADDR);
   dut.m_ARBURST(m_ARBURST);
