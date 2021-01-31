@@ -1,14 +1,11 @@
 #include <systemc.h>
 
 #include "axi_tb.h"
-
 #include "obj_dir/Vaxi_dut.h"
 
 SC_MODULE(Reset) {
  public:
-  SC_CTOR(Reset) {
-    SC_THREAD(run);
-  };
+  SC_CTOR(Reset) { SC_THREAD(run); };
 
   void run() {
     rst.write(true);
@@ -105,7 +102,7 @@ int sc_main(int argc, char **argv) {
   sc_signal<uint32_t> m_RDATA;
   sc_signal<uint32_t> m_AWADDR;
   sc_signal<uint32_t> m_WDATA;
-    
+
   Vaxi_dut dut("dut");
   dut.clk(clk);
   dut.rst(rst);
